@@ -1,0 +1,4 @@
+ipykernel
+transformers
+datasets[audio] 
+accelerate
