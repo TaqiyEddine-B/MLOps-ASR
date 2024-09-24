@@ -19,9 +19,9 @@ This step focuses on building the foundation of my MLOps-ASR project: a basic Au
 
 Key objectives:
 
-- Set up a FastAPI project structure
-- Integrate the Whisper ASR model for audio transcription
-- Implement error handling and input validation
+- Set up a FastAPI project structure ✅
+- Integrate the Whisper ASR model for audio transcription ✅
+- Implement error handling and input validation ⏳
 
 
 By the end of this step, I'll have a production-ready ASR API that demonstrates best practices in API development, MLOps, and software engineering. This foundation will serve as the building block for more advanced features and optimizations in subsequent steps of the project.

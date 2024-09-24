@@ -1,7 +1,8 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 import os
 import whisper
+from ..src.models import TranscriptionInput
 
 app = FastAPI()
 model = None
@@ -12,8 +13,10 @@ async def startup_event():
   global model
   model = whisper.load_model("tiny")
 
+
 @app.post("/")
-async def transcription(file: UploadFile):
+async def transcription(input_data: TranscriptionInput):
+    file = input_data.file
     with open("audio.wav", 'wb') as f:
         while contents := file.file.read(1024 * 1024):
             f.write(contents)

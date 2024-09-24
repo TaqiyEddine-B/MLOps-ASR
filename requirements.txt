@@ -1,8 +1,9 @@
 ipykernel
 
-ruff
+ruff==0.6.7
 numpy<2.0.0
 openai-whisper==20230918
 python-multipart
 fastapi
 uvicorn
+pydantic==2.9.2
