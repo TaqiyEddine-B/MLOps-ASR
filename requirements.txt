@@ -1,4 +1,8 @@
 ipykernel
-transformers
-datasets[audio] 
-accelerate
+
+ruff
+numpy<2.0.0
+openai-whisper==20230918
+python-multipart
+fastapi
+uvicorn
