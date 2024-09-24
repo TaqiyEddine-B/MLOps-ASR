@@ -1,4 +1,6 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, UploadFile
+from fastapi.responses import RedirectResponse
+import os
 import whisper
 
 app = FastAPI()
@@ -16,7 +18,11 @@ async def transcription(file: UploadFile):
         while contents := file.file.read(1024 * 1024):
             f.write(contents)
         file.file.close()
-    return model.transcribe("audio.wav")["text"]
+    result = model.transcribe("audio.wav")["text"]
+
+    # delete the audio file
+    os.remove("audio.wav")
+    return result
 
 @app.get("/", description="The root redirect to swagger user interface")
 def root():
