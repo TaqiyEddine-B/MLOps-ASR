@@ -1,4 +1,4 @@
-from fastapi import FastAPI,UploadFile
+from fastapi import FastAPI,UploadFile,HTTPException
 from fastapi.responses import RedirectResponse
 import os
 import whisper
@@ -14,12 +14,12 @@ async def startup_event():
   model = whisper.load_model("tiny")
 
 
-@app.post("/")
+@app.post("/",response_model=TranscriptionOutput)
 async def transcription(file: UploadFile):
     try :
+        # validate the input
         TranscriptionInput(file=file)
 
-        #file = input_data.file
         with open("audio.wav", 'wb') as f:
             while contents := file.file.read(1024 * 1024):
                 f.write(contents)
@@ -30,7 +30,10 @@ async def transcription(file: UploadFile):
         os.remove("audio.wav")
         return TranscriptionOutput(transcription=result)
     except ValueError as e:
-        return {"error": str(e)}
+        raise HTTPException(status_code=400, detail=str(e))
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")
 
 @app.get("/", description="The root redirect to swagger user interface")
 def root():
