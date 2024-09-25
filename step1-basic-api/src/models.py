@@ -1,5 +1,7 @@
 from pydantic import BaseModel,field_validator
 from fastapi import UploadFile
+from loguru import logger
+
 
 class TranscriptionInput(BaseModel):
     file: UploadFile
@@ -7,7 +9,9 @@ class TranscriptionInput(BaseModel):
     @field_validator('file')
     def validate_file_type(cls, v):
         if not v.filename.lower().endswith('.mp3'):
-            raise ValueError('Only MP3 files are allowed')
+            error_message= 'Only MP3 files are allowed'
+            logger.error(error_message)
+            raise ValueError(error_message)
         return v
 
 

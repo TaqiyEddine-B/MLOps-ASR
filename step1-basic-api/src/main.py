@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse
 import os
 import whisper
 from ..src.models import TranscriptionInput,TranscriptionOutput
+from loguru import logger
 
 app = FastAPI()
 model = None
@@ -11,7 +12,9 @@ model = None
 @app.on_event("startup")
 async def startup_event():
   global model
-  model = whisper.load_model("tiny")
+  model_name='tiny'
+  model = whisper.load_model(model_name)
+  logger.info(f'Model {model_name} is loaded successfully')
 
 
 @app.post("/",response_model=TranscriptionOutput)
@@ -33,7 +36,7 @@ async def transcription(file: UploadFile):
         raise HTTPException(status_code=400, detail=str(e))
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail="An unexpected error occurred")
+        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
 
 @app.get("/", description="The root redirect to swagger user interface")
 def root():

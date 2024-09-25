@@ -7,3 +7,4 @@ python-multipart
 fastapi
 uvicorn
 pydantic==2.9.2
+loguru==0.7.2
