@@ -1,10 +1,12 @@
-from fastapi import FastAPI,UploadFile,HTTPException
-from fastapi.responses import RedirectResponse
 import os
-import whisper
-from ..src.models import TranscriptionInput,TranscriptionOutput
-from loguru import logger
+
 import mlflow
+import whisper
+from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi.responses import RedirectResponse
+from loguru import logger
+
+from ..src.models import TranscriptionInput, TranscriptionOutput
 
 app = FastAPI()
 model = None
@@ -33,14 +35,16 @@ async def transcription(file: UploadFile):
                 f.write(contents)
             file.file.close()
         result = model.transcribe("audio.wav")["text"]
+        # clean up the file
+        os.remove("audio.wav")
+
 
         # log sth to mlflow
         mlflow.log_param("model_name", "tiny")
         mlflow.log_param("input_file", file.filename)
         mlflow.log_param("transcription", result)
 
-        # clean up the file
-        os.remove("audio.wav")
+
         return TranscriptionOutput(transcription=result)
     except ValueError as e:
         mlflow.log_param("error", str(e))
@@ -48,7 +52,9 @@ async def transcription(file: UploadFile):
 
     except Exception as e:
         mlflow.log_param("error", str(e))
-        raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"An unexpected error occurred: {str(e)}")
     finally:
         if run:
             mlflow.end_run()

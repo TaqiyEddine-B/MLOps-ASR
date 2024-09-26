@@ -1,2 +1,4 @@
+target-version = "py310"
 [lint]
-fixable = ["F401"]  # F401: Remove unused imports
+select = ["E", "F","I001","I002"]
+fixable = ["F401","I"]  # F401: Remove unused imports

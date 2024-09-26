@@ -16,8 +16,10 @@ install:
 clean:
 	rm -rf $(VENV_DIR)
 	@echo "Virtual environment removed"
-format:
+lint:
 	ruff check . --fix
+watch:
+	ruff check --watch
 run:
 	uvicorn step1-basic-api.src.main:app --host 127.0.0.1 --port 8000 --reload
 
@@ -26,3 +28,6 @@ curl:
 
 mlflow:
 	mlflow ui
+
+evaluate:
+	python -m step1-basic-api.evaluation.evaluate

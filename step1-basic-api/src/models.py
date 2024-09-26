@@ -1,6 +1,6 @@
-from pydantic import BaseModel,field_validator
 from fastapi import UploadFile
 from loguru import logger
+from pydantic import BaseModel, field_validator
 
 
 class TranscriptionInput(BaseModel):

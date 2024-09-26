@@ -9,3 +9,4 @@ uvicorn
 pydantic==2.9.2
 loguru==0.7.2
 mlflow==2.16.2
+jiwer==3.0.4
