@@ -31,3 +31,5 @@ mlflow:
 
 evaluate:
 	python -m step1-basic-api.evaluation.evaluate
+test:
+	PYTHONPATH=. pytest -v -s step1_basic_api/tests/
