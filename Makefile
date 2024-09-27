@@ -37,3 +37,5 @@ test:
 
 build:
 	docker build -t step1-basic-api:latest -f step1_basic_api/Dockerfile .
+
+all: lint test

@@ -14,12 +14,16 @@ model = None
 
 mlflow.set_experiment("ASR-Transcription")
 
-@app.on_event("startup")
-async def startup_event():
-  global model
-  model_name='tiny'
-  model = whisper.load_model(model_name)
-  logger.info(f'Model {model_name} is loaded successfully')
+# @app.on_event("startup")
+# async def startup_event():
+#   global model
+#   model_name='tiny'
+#   model = whisper.load_model(model_name)
+#   logger.info(f'Model {model_name} is loaded successfully')
+
+model_name='tiny'
+model = whisper.load_model(model_name)
+logger.info(f'Model {model_name} is loaded successfully')
 
 @app.post("/",response_model=TranscriptionOutput)
 async def transcription(file: UploadFile):
