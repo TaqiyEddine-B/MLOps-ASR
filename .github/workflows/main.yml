@@ -59,4 +59,4 @@ jobs:
         make setup
         make install
     - name: Run tests
-      run: PYTHONPATH=. pytest -v -s step1_basic_api/tests/
+      run: PYTHONPATH=. .venv/bin/pytest -v -s step1_basic_api/tests/
