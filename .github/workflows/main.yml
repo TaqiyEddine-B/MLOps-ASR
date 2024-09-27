@@ -53,10 +53,10 @@ jobs:
     - name: Install virtualenv
       run: pip install virtualenv
 
-      
+
     - name: Install dependencies
       run: |
         make setup
         make install
     - name: Run tests
-      run: make test
+      run: PYTHONPATH=. pytest -v -s step1_basic_api/tests/
