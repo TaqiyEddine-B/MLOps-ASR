@@ -1,16 +1,17 @@
-import pytest
-from fastapi.testclient import TestClient
 from unittest.mock import MagicMock, patch
-from step1_basic_api.src.main import app
-from io import BytesIO
+
+from fastapi.testclient import TestClient
 from loguru import logger
+
+from step1_basic_api.src.main import app
 
 client = TestClient(app)
 
 # Mock audio data for the upload
 def mock_audio_file():
-    from pydub import AudioSegment
     from io import BytesIO
+
+    from pydub import AudioSegment
 
     audio = AudioSegment.silent(duration=1000)  
     buffer = BytesIO()
