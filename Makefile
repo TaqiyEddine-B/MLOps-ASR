@@ -38,4 +38,16 @@ test:
 build:
 	docker build -t step1-basic-api:latest -f step1_basic_api/Dockerfile .
 
+run-docker:
+	docker run -p 8000:8000 step1-basic-api:latest
+
 all: lint test
+
+
+run-demo:
+	uvicorn fastapi_demo.main:app --host 127.0.0.1 --port 8001 --reload
+build-demo:
+	docker build -t fastapi_demo:latest -f fastapi_demo/Dockerfile .
+
+run-docker-demo:
+	docker run -p 8001:8001 fastapi_demo:latest

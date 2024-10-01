@@ -164,3 +164,4 @@ cython_debug/
 temp
 data
 mlruns
+fastapi_demo
