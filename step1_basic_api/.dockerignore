@@ -1,0 +1,52 @@
+# Version control
+.git
+.gitignore
+
+# Python cache files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv
+
+# Development and test files
+tests/
+*.ipynb
+experiments/
+
+# CI/CD
+.github/
+
+# Logs
+*.log
+
+# MLflow
+mlruns/
+
+# Data (if you don't want to include it in the Docker image)
+data/
+
+# Documentation
+README.md
+
+# Configuration files
+ruff.toml
+pytest.ini
+
+# Makefile (not needed in the Docker image)
+Makefile
+
+# Editor-specific files
+.vscode/
+.idea/
+
+# Any other files or directories not needed in the Docker image
+
+
+.pytest_cache
+.mypy_cache
+.ruff_cache
+fastapi_demo/
+temp/

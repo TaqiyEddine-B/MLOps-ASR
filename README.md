@@ -1,6 +1,5 @@
+![GitHub Workflow Status](https://github.com/TaqiyEddine-B/MLOps-ASR/actions/workflows/main.yml/badge.svg)
 # MLOps-ASR: Bridging Automatic Speech Recognition and MLOps
-
-## Introduction
 
 This repository contains a full-stack implementation of an Automatic Speech Recognition (ASR) system audio inputs and return transcription results.
 Built with a focus on MLOps best practices, it serves as both a learning journey for me and a demonstration of how to build, deploy, and maintain a production-ready ML system.
