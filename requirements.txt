@@ -1,6 +1,8 @@
 ruff==0.6.7
 numpy<2.0.0
-openai-whisper==20230918
+# openai-whisper==20230918
+transformers==4.45.1
+librosa==0.10.2.post1
 python-multipart==0.0.10
 fastapi==0.115.0
 uvicorn==0.30.6

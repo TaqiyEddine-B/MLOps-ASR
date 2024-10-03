@@ -21,7 +21,7 @@ lint:
 watch:
 	ruff check --watch
 run:
-	uvicorn step1-basic-api.src.main:app --host 127.0.0.1 --port 8000 --reload
+	uvicorn step1_basic_api.src.main:app --host 127.0.0.1 --port 8000 --reload
 
 curl:
 	curl -X POST http://127.0.0.1:8000/ -F "file=@$(FILE2)"
@@ -51,3 +51,6 @@ build-demo:
 
 run-docker-demo:
 	docker run -p 8001:8001 fastapi_demo:latest
+
+clean_docker:
+	docker system prune -a

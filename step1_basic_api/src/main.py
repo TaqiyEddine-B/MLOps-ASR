@@ -1,12 +1,10 @@
-import os
 
 import mlflow
-import whisper
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import RedirectResponse
-from loguru import logger
 
-from ..src.models import TranscriptionInput, TranscriptionOutput
+from ..src.model_base import HfWhisper
+from ..src.models import TranscriptionOutput
 
 app = FastAPI()
 model = None
@@ -21,9 +19,10 @@ mlflow.set_experiment("ASR-Transcription")
 #   model = whisper.load_model(model_name)
 #   logger.info(f'Model {model_name} is loaded successfully')
 
-model_name='tiny'
-model = whisper.load_model(model_name)
-logger.info(f'Model {model_name} is loaded successfully')
+
+model =HfWhisper()
+model.load_model()
+
 
 @app.post("/",response_model=TranscriptionOutput)
 async def transcription(file: UploadFile):
@@ -31,23 +30,12 @@ async def transcription(file: UploadFile):
     try :
         run = mlflow.start_run()
 
-        # validate the input
-        TranscriptionInput(file=file)
-
-        with open("audio.wav", 'wb') as f:
-            while contents := file.file.read(1024 * 1024):
-                f.write(contents)
-            file.file.close()
-        result = model.transcribe("audio.wav")["text"]
-        # clean up the file
-        os.remove("audio.wav")
-
+        result = model.predict(file)
 
         # log sth to mlflow
         mlflow.log_param("model_name", "tiny")
         mlflow.log_param("input_file", file.filename)
         mlflow.log_param("transcription", result)
-
 
         return TranscriptionOutput(transcription=result)
     except ValueError as e:
