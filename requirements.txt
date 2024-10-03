@@ -1,6 +1,7 @@
 ruff==0.6.7
 numpy<2.0.0
 # openai-whisper==20230918
+torch==2.4.1
 transformers==4.45.1
 librosa==0.10.2.post1
 python-multipart==0.0.10

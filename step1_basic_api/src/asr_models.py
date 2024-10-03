@@ -2,7 +2,8 @@ import io
 
 import librosa
 import soundfile as sf
-import whisper
+
+# import whisper
 from fastapi import UploadFile
 from transformers import WhisperForConditionalGeneration, WhisperProcessor
 
@@ -17,26 +18,26 @@ class ModelBase:
     def predict(self, input_data):
         raise NotImplementedError
 
-class OpenaiWhisper(ModelBase):
-    def __init__(self):
-        super().__init__()
+# class OpenaiWhisper(ModelBase):
+#     def __init__(self):
+#         super().__init__()
 
-    def load_model(self):
-        self.model = whisper.load_model("tiny")
+#     def load_model(self):
+#         self.model = whisper.load_model("tiny")
 
-    def predict(self, input_file:UploadFile):
-        # validate the input
-        TranscriptionInput(file=file)
+#     def predict(self, input_file:UploadFile):
+#         # validate the input
+#         TranscriptionInput(file=file)
 
-        with open("audio.wav", 'wb') as f:
-            while contents := file.file.read(1024 * 1024):
-                f.write(contents)
-            file.file.close()
-        result = self.model.transcribe("audio.wav")["text"]
-        # clean up the file
-        os.remove("audio.wav")
+#         with open("audio.wav", 'wb') as f:
+#             while contents := file.file.read(1024 * 1024):
+#                 f.write(contents)
+#             file.file.close()
+#         result = self.model.transcribe("audio.wav")["text"]
+#         # clean up the file
+#         os.remove("audio.wav")
 
-        return result
+#         return result
 
 class HfWhisper(ModelBase):
     """Whisper model from HuggingFace"""

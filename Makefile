@@ -2,6 +2,8 @@ VENV_DIR=.venv
 BASHRC=~/.bashrc
 FILE=data/liverpool2.mp3 # https://audio-lingua.ac-versailles.fr/spip.php?article4295
 FILE2=data/rentree_en_cm1.mp3
+IMAGE_TAG=mlops-asr-api:latest
+
 setup:
 	virtualenv $(VENV_DIR)
 	@echo "source $(VENV_DIR)/bin/activate" >> $(BASHRC)
@@ -14,8 +16,8 @@ install:
 	$(VENV_DIR)/bin/pip install --upgrade pip && $(VENV_DIR)/bin/pip install -r requirements.txt
 
 clean:
-	rm -rf $(VENV_DIR)
-	@echo "Virtual environment removed"
+	# uninstall all the packages
+	$(VENV_DIR)/bin/pip freeze | xargs $(VENV_DIR)/bin/pip uninstall -y
 lint:
 	ruff check . --fix
 watch:
@@ -36,10 +38,10 @@ test:
 
 
 build:
-	docker build -t step1-basic-api:latest -f step1_basic_api/Dockerfile .
+	docker build -t $(IMAGE_TAG) -f step1_basic_api/Dockerfile .
 
-run-docker:
-	docker run -p 8000:8000 step1-basic-api:latest
+run-docker: build
+	docker run -p 8000:8000 $(IMAGE_TAG)
 
 all: lint test
 

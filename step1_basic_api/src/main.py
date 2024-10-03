@@ -1,14 +1,16 @@
 
+import os
+
 import mlflow
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import RedirectResponse
 
-from ..src.model_base import HfWhisper
+from ..src.asr_models import HfWhisper
 from ..src.models import TranscriptionOutput
 
 app = FastAPI()
-model = None
 
+os.environ["GIT_PYTHON_REFRESH"] = "quiet"
 
 mlflow.set_experiment("ASR-Transcription")
 

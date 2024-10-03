@@ -74,3 +74,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo "All jobs completed successfully!"
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the latest code from the repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up AWS CLI with your credentials (you need to add these as secrets in your GitHub repo settings)
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Step 3: Login to AWS ECR Public using AWS CLI
+      - name: Authenticate to AWS ECR Public
+        run: |
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u7w7o1r7
+
+      # Step 4: Build the Docker image
+      - name: Build Docker image
+        run: docker build -t mlops-asr-api .
+
+      # Step 5: Tag the Docker image
+      - name: Tag Docker image
+        run: docker tag mlops-asr-api:latest public.ecr.aws/u7w7o1r7/mlops-asr-api:latest
+
+      # Step 6: Push the Docker image to ECR
+      - name: Push Docker image to AWS ECR Public
+        run: docker push public.ecr.aws/u7w7o1r7/mlops-asr-api:latest
