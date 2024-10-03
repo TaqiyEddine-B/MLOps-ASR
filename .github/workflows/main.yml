@@ -68,16 +68,10 @@ jobs:
       run:
         python -m pytest -v -s step1_basic_api/tests/
 
-  # This job ensures all jobs run in parallel
-  all_jobs:
+  deploy:
     needs: [lint, test]
     runs-on: ubuntu-latest
-    steps:
-    - run: echo "All jobs completed successfully!"
-
-  deploy:
-    runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       # Step 1: Checkout the latest code from the repo
       - name: Checkout code
@@ -89,21 +83,22 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: ${{ secrets.AWS_REGION }}
 
       # Step 3: Login to AWS ECR Public using AWS CLI
       - name: Authenticate to AWS ECR Public
         run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/u7w7o1r7
+          aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
 
       # Step 4: Build the Docker image
       - name: Build Docker image
-        run: docker build -t mlops-asr-api .
+        run: docker build -t mlops-asr-api -f step1_basic_api/Dockerfile .
 
       # Step 5: Tag the Docker image
       - name: Tag Docker image
-        run: docker tag mlops-asr-api:latest public.ecr.aws/u7w7o1r7/mlops-asr-api:latest
+        run: docker tag mlops-asr-api:latest ${{ secrets.ECR_REGISTRY }}/mlops-asr-api:latest
+
 
       # Step 6: Push the Docker image to ECR
       - name: Push Docker image to AWS ECR Public
-        run: docker push public.ecr.aws/u7w7o1r7/mlops-asr-api:latest
+        run: docker push ${{ secrets.ECR_REGISTRY }}/mlops-asr-api:latest
